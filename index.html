@@ -1,0 +1,1029 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HVAC Lead + Hiring System</title>
+  <meta name="description" content="Stop missing HVAC calls. Capture leads, respond faster, and organize hiring with one simple system." />
+  <style>
+    :root{
+      --bg: #0b0f17;
+      --panel: #111827;
+      --panel-2: #0f172a;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --line: rgba(255,255,255,.08);
+      --shadow: 0 20px 60px rgba(0,0,0,.55);
+      --radius: 18px;
+      --max: 1100px;
+    }
+    *{ box-sizing: border-box; }
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--text);
+      background: radial-gradient(1000px 600px at 20% 0%, rgba(99,102,241,.20), transparent 55%),
+                  radial-gradient(900px 500px at 90% 10%, rgba(34,197,94,.12), transparent 50%),
+                  var(--bg);
+      line-height: 1.5;
+    }
+    a{ color: inherit; text-decoration: none; }
+    .wrap{ width: min(var(--max), calc(100% - 40px)); margin: 0 auto; }
+    .nav{
+      position: sticky; top: 0;
+      background: rgba(11,15,23,.75);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--line);
+      z-index: 10;
+    }
+    .nav-inner{
+      display:flex; align-items:center; justify-content:space-between;
+      padding: 14px 0;
+      gap: 14px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:10px;
+      font-weight: 800;
+      letter-spacing: .2px;
+    }
+    .logo{
+      width: 34px; height: 34px; border-radius: 12px;
+      border: 1px solid var(--line);
+      background: linear-gradient(135deg, rgba(99,102,241,.25), rgba(34,197,94,.12));
+      box-shadow: var(--shadow);
+    }
+    .nav-links{
+      display:flex; gap: 14px; align-items:center;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .nav-links a:hover{ color: var(--text); }
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      color: var(--text);
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform .12s ease, background .12s ease, border-color .12s ease;
+      white-space: nowrap;
+    }
+    .btn:hover{ transform: translateY(-1px); background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.14); }
+    .btn.primary{
+      background: linear-gradient(135deg, rgba(99,102,241,.75), rgba(99,102,241,.35));
+      border-color: rgba(99,102,241,.55);
+    }
+    .btn.primary:hover{ background: linear-gradient(135deg, rgba(99,102,241,.85), rgba(99,102,241,.45)); }
+    .btn.ghost{
+      background: transparent;
+    }
+
+    /* HERO */
+    .hero{
+      padding: 56px 0 28px;
+    }
+    .hero-grid{
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 22px;
+      align-items: stretch;
+    }
+    .card{
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    .hero-card{ padding: 28px; }
+    .kicker{
+      display:inline-flex; gap: 10px; align-items:center;
+      color: var(--muted);
+      font-weight: 650;
+      font-size: 13px;
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255,255,255,.03);
+    }
+    h1{
+      margin: 14px 0 10px;
+      font-size: clamp(30px, 4vw, 46px);
+      line-height: 1.1;
+      letter-spacing: -0.6px;
+    }
+    .sub{
+      color: var(--muted);
+      font-size: 16px;
+      max-width: 56ch;
+    }
+    .cta-row{
+      display:flex; gap: 12px; flex-wrap: wrap;
+      margin-top: 18px;
+    }
+    .micro{
+      margin-top: 14px;
+      color: rgba(229,231,235,.72);
+      font-size: 13px;
+    }
+    .mini{
+      padding: 22px;
+    }
+    .mini h3{ margin: 0 0 10px; font-size: 16px; }
+    .mini p{ margin: 0; color: var(--muted); font-size: 14px; }
+    .list{
+      margin: 14px 0 0;
+      padding: 0;
+      list-style: none;
+      display:flex; flex-direction: column; gap: 10px;
+      color: rgba(229,231,235,.88);
+      font-size: 14px;
+    }
+    .li{
+      display:flex; gap: 10px; align-items:flex-start;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(255,255,255,.02);
+    }
+    .dot{
+      width: 10px; height: 10px; border-radius: 999px;
+      margin-top: 5px;
+      background: rgba(34,197,94,.65);
+      flex: 0 0 auto;
+    }
+
+    /* SECTIONS */
+    section{ padding: 26px 0; }
+    .section-title{
+      display:flex; align-items:flex-end; justify-content:space-between; gap: 14px;
+      margin-bottom: 14px;
+    }
+    h2{ margin:0; font-size: 22px; letter-spacing: -.2px; }
+    .hint{ color: var(--muted); font-size: 14px; }
+
+    .grid-3{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+    .box{ padding: 18px; }
+    .box h3{ margin: 0 0 8px; font-size: 16px; }
+    .box p{ margin: 0; color: var(--muted); font-size: 14px; }
+    .box ul{ margin: 10px 0 0; padding-left: 16px; color: rgba(229,231,235,.88); font-size: 14px; }
+    .steps{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+    .step-num{
+      display:inline-flex; align-items:center; justify-content:center;
+      width: 34px; height: 34px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+    .benefits{
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 14px;
+    }
+    .benefits .box{ height: 100%; }
+    .note{
+      color: rgba(229,231,235,.85);
+      font-size: 14px;
+      padding: 14px;
+      border-radius: 14px;
+      border: 1px dashed rgba(255,255,255,.14);
+      background: rgba(255,255,255,.02);
+      margin-top: 12px;
+    }
+
+    /* CTA */
+    .cta{
+      padding: 26px;
+      display:flex; gap: 14px; align-items:center; justify-content:space-between;
+      flex-wrap: wrap;
+    }
+    .cta h2{ font-size: 22px; }
+    .cta p{ margin: 6px 0 0; color: var(--muted); font-size: 14px; max-width: 60ch; }
+
+    /* Footer */
+    footer{
+      border-top: 1px solid var(--line);
+      padding: 18px 0 28px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .foot{
+      display:flex; gap: 10px; justify-content:space-between; align-items:center;
+      flex-wrap: wrap;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px){
+      .hero-grid{ grid-template-columns: 1fr; }
+      .grid-3{ grid-template-columns: 1fr; }
+      .steps{ grid-template-columns: 1fr; }
+      .benefits{ grid-template-columns: 1fr; }
+      .nav-links{ display:none; }
+    }
+
+
+
+    /* Forms */
+    .form{
+      margin-top: 14px;
+      display:flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .grid-2{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .field label{
+      display:block;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: rgba(229,231,235,.92);
+    }
+    .field input,
+    .field select,
+    .field textarea{
+      width: 100%;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      color: var(--text);
+      outline: none;
+    }
+    .field input::placeholder,
+    .field textarea::placeholder{
+      color: rgba(156,163,175,.75);
+    }
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus{
+      border-color: rgba(99,102,241,.55);
+      box-shadow: 0 0 0 3px rgba(99,102,241,.18);
+    }
+    .help{
+      display:block;
+      margin-top: 6px;
+      font-size: 12px;
+      color: rgba(156,163,175,.9);
+    }
+    .consent{
+      display:flex;
+      gap: 10px;
+      align-items:flex-start;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.02);
+    }
+    .consent input{
+      margin-top: 2px;
+    }
+    .consent label{
+      font-size: 13px;
+      color: rgba(229,231,235,.88);
+    }
+    .form-actions{
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items:center;
+    }
+    .fineprint{
+      font-size: 12px;
+      color: rgba(156,163,175,.9);
+      border-top: 1px solid var(--line);
+      padding-top: 12px;
+    }
+    .success{
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(34,197,94,.35);
+      background: rgba(34,197,94,.08);
+      color: rgba(229,231,235,.95);
+    }
+    @media (max-width: 900px){
+      .grid-2{ grid-template-columns: 1fr; }
+    }
+
+
+
+                  
+
+
+
+
+
+
+
+    /* Callbar */
+    .callbar{
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      gap: 10px;
+      padding: 12px;
+      background: rgba(11,15,23,.95);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+      border-top: 1px solid var(--line);
+      z-index: 100;
+      box-shadow: 0 -4px 20px rgba(0,0,0,.4);
+    }
+    .callbar-btn{
+      flex: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: linear-gradient(135deg, rgba(99,102,241,.75), rgba(99,102,241,.35));
+      border-color: rgba(99,102,241,.55);
+      color: var(--text);
+      font-weight: 700;
+      font-size: 15px;
+      text-align: center;
+      transition: transform .12s ease, background .12s ease;
+    }
+    .callbar-btn:hover{
+      transform: translateY(-1px);
+      background: linear-gradient(135deg, rgba(99,102,241,.85), rgba(99,102,241,.45));
+    }
+    .callbar-btn.ghost{
+      background: rgba(255,255,255,.04);
+      border-color: var(--line);
+    }
+    .callbar-btn.ghost:hover{
+      background: rgba(255,255,255,.06);
+    }
+    @media (min-width: 901px){
+      .callbar{ display: none; }
+    }
+
+    .callbar{
+      position: fixed;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 14px;
+      width: min(var(--max), calc(100% - 24px));
+      display:flex;
+      gap: 10px;
+      z-index: 999;
+      padding: 10px;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: rgba(11,15,23,.75);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+    }
+    .callbar-btn{
+      flex: 1;
+      text-align:center;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.06);
+      font-weight: 800;
+    }
+    .callbar-btn.ghost{
+      background: transparent;
+    }
+    .callbar-btn:hover{
+      background: rgba(255,255,255,.10);
+    }
+
+  </style>
+</head>
+
+<body>
+  <div class="callbar">
+    <a class="callbar-btn" href="tel:19037073718">📞 Call Now</a>
+    <a class="callbar-btn ghost" href="#contact">Request Service</a>
+  </div>
+
+  <header class="nav">
+    <div class="wrap nav-inner">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <div style="font-size:14px;">HVAC Ops System</div>
+          <div style="font-size:12px; color: var(--muted); font-weight:600;">Lead + Hiring Flow</div>
+        </div>
+      </div>
+
+      <nav class="nav-links" aria-label="Primary">
+        <a href="#problems">Problems</a>
+        <a href="#solution">Solution</a>
+        <a href="#how">How it works</a>
+        <a href="#contact">Get started</a>
+      </nav>
+
+      <div style="display:flex; gap:10px; align-items:center;">
+        <a class="btn ghost" href="#apply">Apply for a Job</a>
+        <a class="btn primary" href="#service">Request Service</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div class="card hero-card">
+          <div class="kicker">Built for local HVAC companies • Simple setup • No fluff</div>
+          <h1>Stop Missing HVAC Calls. Get More Jobs. Hire Without the Chaos.</h1>
+          <p class="sub">
+            We help HVAC companies capture every service request, respond faster, and organize hiring —
+            all in one simple system.
+          </p>
+
+          <div class="cta-row">
+            <a class="btn primary" href="#service">Request Service</a>
+            <a class="btn" href="#apply">Apply for a Job</a>
+            <a class="btn ghost" href="#contact">Talk to the Owner/Manager</a>
+          </div>
+
+          <div class="micro">
+            Every missed call is a job that goes to the next HVAC company.
+          </div>
+        </div>
+
+        <aside class="card mini" id="problems">
+          <h3>Sound familiar?</h3>
+          <p>These are the leaks that cost HVAC companies money every week.</p>
+          <ul class="list">
+            <li class="li"><span class="dot"></span><span>Missed calls during jobs or after hours</span></li>
+            <li class="li"><span class="dot"></span><span>Voicemails with no follow-up</span></li>
+            <li class="li"><span class="dot"></span><span>Leads coming from everywhere (calls, texts, FB, website)</span></li>
+            <li class="li"><span class="dot"></span><span>Hiring = random calls at the worst times</span></li>
+            <li class="li"><span class="dot"></span><span>No system — just chaos</span></li>
+          </ul>
+        </aside>
+      </div>
+    </section>
+
+    <section id="solution">
+      <div class="wrap">
+        <div class="section-title">
+          <h2>One simple system that fixes it all</h2>
+          <div class="hint">Capture leads • Book jobs • Organize hiring</div>
+        </div>
+
+        <div class="grid-3">
+          <div class="card box">
+            <h3>📞 Capture Every Lead</h3>
+            <p>Calls, texts, and forms go into one clean flow.</p>
+            <ul>
+              <li>Missed-call auto text reply</li>
+              <li>Service request form</li>
+              <li>Instant notifications</li>
+            </ul>
+          </div>
+
+          <div class="card box">
+            <h3>🛠️ Book More Jobs</h3>
+            <p>Faster response = more booked work.</p>
+            <ul>
+              <li>Clear “Request Service” path</li>
+              <li>Simple lead tracking</li>
+              <li>No more lost messages</li>
+            </ul>
+          </div>
+
+          <div class="card box">
+            <h3>👷 Hire Without Disruption</h3>
+            <p>Applicants apply once — you review when you’re ready.</p>
+            <ul>
+              <li>Hiring page + application form</li>
+              <li>Auto-response to applicants</li>
+              <li>Basic screening questions</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="how">
+      <div class="wrap">
+        <div class="section-title">
+          <h2>How it works</h2>
+          <div class="hint">Setup → Flow → Results</div>
+        </div>
+
+        <div class="steps">
+          <div class="card box">
+            <div class="step-num">1</div>
+            <h3>We set it up</h3>
+            <p>We build your service + hiring pages and connect the lead/applicant flows.</p>
+          </div>
+
+          <div class="card box">
+            <div class="step-num">2</div>
+            <h3>Everything routes clean</h3>
+            <p>Calls, texts, forms, and applicants go into one organized system.</p>
+          </div>
+
+          <div class="card box">
+            <div class="step-num">3</div>
+            <h3>You focus on jobs</h3>
+            <p>You run calls and installs. The system handles the front-end chaos.</p>
+          </div>
+        </div>
+
+        <div class="note">
+          No new complicated software to learn. We keep it simple and practical.
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap benefits">
+        <div class="card box">
+          <h3>What this means for your business</h3>
+          <ul>
+            <li>Fewer missed jobs</li>
+            <li>Faster response times</li>
+            <li>Less stress during the day</li>
+            <li>More organized hiring</li>
+            <li>One point of contact for your systems</li>
+          </ul>
+          <div class="note">
+            In most cases, this pays for itself with <strong>one or two extra service calls per month</strong>.
+          </div>
+        </div>
+
+        <div class="card box">
+          <h3>Built for local HVAC companies</h3>
+          <p>
+            Designed for small and growing HVAC teams — no long contracts, simple setup, and local support.
+          </p>
+          <ul>
+            <li>Clean, mobile-first layout</li>
+            <li>Fast load and easy navigation</li>
+            <li>Two actions only: service or hiring</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="wrap" id="service">
+      <div class="card cta">
+        <div>
+          <h2>Ready to stop missing calls?</h2>
+          <p>Use the buttons below to request service or apply for a job. (Demo buttons for now — we’ll connect the forms next.)</p>
+        </div>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <a class="btn primary" href="#contact">Request Service</a>
+          <a class="btn" href="#apply">Apply for a Job</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Placeholder sections for next steps -->
+    <section class="wrap" id="apply">
+      <div class="card box">
+
+      <h2 style="margin-bottom:8px;">Apply for a Job</h2>
+      <p class="hint">Quick application. We’ll review and reach out if it’s a fit.</p>
+
+      <form
+        class="form"
+        id="hiringForm"
+        action="https://formsubmit.co/plasmflo@gmail.com" 
+        method="POST"
+        
+      >
+        <!-- FormSubmit settings -->
+        <input type="hidden" name="_subject" value=" New HVAC Job Application"/>
+        <input type="hidden" name="_template" value="table" />
+        <input type="hidden" name="_captcha" value="false" />
+        <input type="hidden" name="Candidate Score" id="candidateScore" value="Not scored" />
+        <!-- Optional redirect -->
+        <!-- <input type="hidden" name="_next" value="thank-you.html" /> -->
+
+        <div class="grid-2">
+          <div class="field">
+            <label for="appName">Full Name</label>
+            <input id="appName" name="Full Name" type="text" placeholder="John Smith" required />
+          </div>
+        
+          <div class="field">
+            <label for="appPhone">Phone Number</label>
+            <input id="appPhone" name="Phone" type="tel" placeholder="(903) 555-0123" required />
+          </div>
+        
+          <div class="field">
+            <label for="appEmail">Email (optional)</label>
+            <input id="appEmail" name="Email" type="email" placeholder="you@email.com" />
+          </div>
+        
+          <div class="field">
+            <label for="city">City</label>
+            <input id="city" name="City" type="text" placeholder="Tyler" required />
+          </div>
+        </div>
+      
+        <div class="grid-2">
+          <div class="field">
+            <label for="role">Position Interested In</label>
+            <select id="role" name="Position" required>
+              <option value="" selected disabled>Select one</option>
+              <option>HVAC Installer</option>
+              <option>HVAC Service Technician</option>
+              <option>Maintenance / Tune-Up Tech</option>
+              <option>Apprentice / Helper</option>
+              <option>Dispatcher / CSR</option>
+              <option>Other</option>
+            </select>
+          </div>
+        
+          <div class="field">
+            <label for="start">When can you start?</label>
+            <select id="start" name="Start Availability" required>
+              <option value="" selected disabled>Select one</option>
+              <option>Immediately</option>
+              <option>Within 1 week</option>
+              <option>Within 2–3 weeks</option>
+              <option>1 month+</option>
+            </select>
+          </div>
+        </div>
+      
+        <!-- Screening -->
+        <div class="grid-2">
+          <div class="field">
+            <label for="experience">Years of HVAC Experience</label>
+            <select id="experience" name="HVAC Experience" required>
+              <option value="" selected disabled>Select one</option>
+              <option>0 (No experience)</option>
+              <option>Less than 1 year</option>
+              <option>1–2 years</option>
+              <option>3–5 years</option>
+              <option>5+ years</option>
+            </select>
+          </div>
+        
+          <div class="field">
+            <label for="epa">EPA Certification?</label>
+            <select id="epa" name="EPA Certification" required>
+              <option value="" selected disabled>Select one</option>
+              <option>Yes (Universal)</option>
+              <option>Yes (Type I)</option>
+              <option>Yes (Type II)</option>
+              <option>Yes (Type III)</option>
+              <option>No</option>
+              <option>Not sure</option>
+            </select>
+          </div>
+        </div>
+      
+        <div class="grid-2">
+          <div class="field">
+            <label for="license">Valid Driver’s License?</label>
+            <select id="license" name="Driver's License" required>
+              <option value="" selected disabled>Select one</option>
+              <option>Yes</option>
+              <option>No</option>
+            </select>
+          </div>
+        
+          <div class="field">
+            <label for="bg">Background / Drug Screening OK?</label>
+            <select id="bg" name="Screening OK" required>
+              <option value="" selected disabled>Select one</option>
+              <option>Yes</option>
+              <option>No</option>
+              <option>Prefer not to say</option>
+            </select>
+          </div>
+        </div>
+      
+        <div class="field">
+          <label for="schedule">Schedule Preference</label>
+          <select id="schedule" name="Schedule" required>
+            <option value="" selected disabled>Select one</option>
+            <option>Full-time</option>
+            <option>Part-time</option>
+            <option>Weekends</option>
+            <option>On-call</option>
+            <option>Flexible</option>
+          </select>
+        </div>
+      
+        <div class="field">
+          <label for="work">Briefly describe your HVAC work (or what you’re learning)</label>
+          <textarea id="work" name="Summary" rows="5" placeholder="Example: 2 years residential installs, condensers, coil swaps, basic troubleshooting, maintenance."></textarea>
+          <small class="help">Keep it short and real.</small>
+        </div>
+      
+        <div class="consent">
+          <input id="appConsent" name="Consent" type="checkbox" required />
+          <label for="appConsent">
+            I confirm the information is accurate and I can be contacted by call or text.
+          </label>
+        </div>
+      
+        <div class="form-actions">
+          <button class="btn primary" type="submit">Submit Application</button>
+          <a class="btn" href="#service">Request Service</a>
+        </div>
+      
+        <div class="fineprint">
+          We review applications weekly. If you’re a match, we’ll contact you to schedule next steps.
+        </div>
+      </form>
+
+
+      </div>
+    </section>
+
+    <section class="wrap" id="contact">
+      <div class="card box">
+
+        <h2 style="margin-bottom:8px;">Request Service</h2>
+        <p class="hint">Fast response. Simple details. We’ll contact you ASAP.</p>
+        
+        <form class="form" id="serviceForm" action="https://formsubmit.co/plasmflo@gmail.com" method="POST" onsubmit="return setLeadPriority();">
+
+          <input type="hidden" name="Lead Priority" id="leadPriority" value="" />
+          <input type="hidden" name="Lead Summary" id="leadSummary" value="" />
+          <input type="hidden" name="Best_Time_To_Call" id="bestTime" value="" />
+          <input type="hidden" name="Preferred_Contact_Method" id="contactMethod" value="" />
+
+          <input type="hidden" name="_subject" id="serviceSubject" value="New HVAC Service Request" />
+          <input type="hidden" name="_template" value="table" />
+          <input type="hidden" name="_captcha" value="false" />
+          <input type="hidden" name="_next" value="thank-you.html">
+
+          <div class="grid-2">
+            <div class="field">
+              <label for="name">Full Name</label>
+              <input id="name" name="name" type="text" placeholder="John Smith" required />
+            </div>
+        
+            <div class="field">
+              <label for="phone">Phone Number</label>
+              <input id="phone" name="phone" type="tel" placeholder="(903) 555-0123" inputmode="tel" required />
+            </div>
+        
+            <div class="field">
+              <label for="email">Email (optional)</label>
+              <input id="email" name="email" type="email" placeholder="you@email.com" />
+            </div>
+        
+            <div class="field">
+              <label for="zip">Zip Code</label>
+              <input id="zip" name="zip" type="text" placeholder="75701" inputmode="numeric" pattern="[0-9]{5}" required />
+              <small class="help">Helps confirm service area.</small>
+            </div>
+          </div>
+        
+          <div class="grid-2">
+            <div class="field">
+              <label for="serviceType">Service Needed</label>
+              <select id="serviceType" name="serviceType" required>
+                <option value="" selected disabled>Select one</option>
+                <option>AC Not Cooling</option>
+                <option>Heat Not Working</option>
+                <option>Strange Noise / Smell</option>
+                <option>Thermostat Issue</option>
+                <option>Maintenance / Tune-Up</option>
+                <option>New Install / Replacement Quote</option>
+                <option>Ductwork / Airflow Issue</option>
+                <option>Other</option>
+              </select>
+            </div>
+        
+            <div class="field">
+              <label for="urgency">Urgency</label>
+              <select id="urgency" name="urgency" required>
+                <option value="" selected disabled>Select one</option>
+                <option>Emergency (Today)</option>
+                <option>Within 24–48 hours</option>
+                <option>This Week</option>
+                <option>Just Need a Quote</option>
+              </select>
+            </div>
+          </div>
+        
+          <div class="field">
+            <label for="address">Service Address</label>
+            <input id="address" name="address" type="text" placeholder="123 Main St, Tyler, TX" required />
+          </div>
+        
+          <div class="grid-2">
+            <div class="field">
+              <label for="contactMethodSelect">Preferred Contact</label>
+              <select id="contactMethodSelect" required>
+                <option value="" selected disabled>Select one</option>
+                <option>Call</option>
+                <option>Text</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="bestTimeSelect">Best Time to Call</label>
+              <select id="bestTimeSelect" required>
+                <option value="" selected disabled>Select one</option>
+                <option>ASAP</option>
+                <option>Morning</option>
+                <option>Afternoon</option>
+                <option>Evening</option>
+              </select>
+            </div>
+          </div>
+        
+          <div class="field">
+            <label for="message">What's going on?</label>
+            <textarea id="message" name="message" rows="5" placeholder="Example: AC running but not cooling. Started yesterday. Filter is clean."></textarea>
+            <small class="help">Short details help us respond faster.</small>
+          </div>
+        
+          <div class="consent">
+            <input id="consent" name="consent" type="checkbox" required />
+            <label for="consent">
+              I agree to be contacted by call or text about this request.
+            </label>
+          </div>
+        
+          <div class="form-actions">
+            <button class="btn primary" type="submit">Submit Request</button>
+            <a class="btn" href="#service">Back to top</a>
+          </div>
+        
+          <div class="fineprint">
+            By submitting, you confirm your info is accurate. Response times vary by call volume and availability.
+          </div>
+        
+          <div class="success" id="successMsg" role="status" aria-live="polite" hidden>
+            ✅ Request received. We’ll reach out shortly.
+          </div>
+        </form>
+        
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap foot">
+      <div>© <span id="year"></span> HVAC Ops System — Lead + Hiring Flow</div>
+      <div>Serving local HVAC companies • Simple monthly support</div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+        // Lead Priority Scoring (Service Requests)
+    const serviceForm = document.getElementById("serviceForm");
+    const leadPriorityField = document.getElementById("leadPriority");
+    const leadSummaryField = document.getElementById("leadSummary");
+
+    if (serviceForm && leadPriorityField && leadSummaryField) {
+      serviceForm.addEventListener("submit", () => {
+        const serviceType = document.getElementById("serviceType")?.value || "Service";
+        const urgency = document.getElementById("urgency")?.value || "Not set";
+        const zip = document.getElementById("zip")?.value || "ZIP?";
+        const name = document.getElementById("name")?.value || "Customer";
+        const phone = document.getElementById("phone")?.value || "Phone?";
+      
+        // Priority tag + emoji
+        let tag = "NORMAL";
+        let emoji = "📩";
+      
+        if (urgency.includes("Emergency")) { tag = "EMERGENCY"; emoji = "🚨"; }
+        else if (urgency.includes("24–48")) { tag = "SOON"; emoji = "⏱️"; }
+        else if (urgency.includes("This Week")) { tag = "THIS WEEK"; emoji = "📅"; }
+        else if (urgency.includes("Quote")) { tag = "QUOTE"; emoji = "💬"; }
+      
+        // Save readable fields into the email body
+        leadPriorityField.value = `${tag} (${urgency})`;
+        leadSummaryField.value = `${serviceType} — ${tag} — ${zip} — ${name} — ${phone}`;
+      
+        // Populate contact preference fields
+        const bestTime = document.getElementById("bestTimeSelect")?.value || "";
+        const contactMethod = document.getElementById("contactMethodSelect")?.value || "";
+        const bestTimeField = document.getElementById("bestTime");
+        const contactMethodField = document.getElementById("contactMethod");
+        if (bestTimeField) bestTimeField.value = bestTime;
+        if (contactMethodField) contactMethodField.value = contactMethod;
+      
+        // Update email subject dynamically
+        const subj = serviceForm.querySelector('input[name="_subject"]');
+        if (subj) {
+          subj.value = `${emoji} ${tag}: ${serviceType} — ${zip}`;
+        }
+      });
+    }
+
+
+
+
+
+
+  
+    const hiringForm = document.getElemmentById('hiringForm');
+    const scoreField = document.getElementById('candidateScore');
+  
+    if (hiringForm && scoreField) {
+      hiringForm.addEventListener('submit', () => {
+        // Grab answers
+        const exp = document.getElementById('experience')?.value || "";
+        const epa = document.getElementById('epa')?.value || "";
+        const license = document.getElementById('license')?.value || "";
+        const bg = document.getElementById('bg')?.value || "";
+  
+        let score = 0;
+  
+        // Experience score (0–4)
+        if (exp.includes("5+")) score += 4;
+        else if (exp.includes("3–5")) score += 3;
+        else if (exp.includes("1–2")) score += 2;
+        else if (exp.includes("Less than 1")) score += 1;
+        else score += 0;
+  
+        // EPA score (0–3)
+        if (epa.includes("Universal")) score += 3;
+        else if (epa.startsWith("Yes")) score += 2;
+        else if (epa.includes("Not sure")) score += 1;
+        else score += 0;
+  
+        // License score (0–2)
+        if (license === "Yes") score += 2;
+  
+        // Screening score (0–1)
+        if (bg === "Yes") score += 1;
+  
+        // Total out of 10
+        const outOf = 10;
+        scoreField.value = `${score}/${outOf}`;
+  
+        // Optional: also update subject line dynamically
+        const subj = hiringForm.querySelector('input[name="_subject"]');
+        if (subj) subj.value = `📩 New HVAC Job Application — Score: ${score}/${outOf}`;
+      });
+    }
+
+
+    function setLeadPriority() {
+      const serviceType = document.getElementById("serviceType")?.value || "Service";
+      const urgency = document.getElementById("urgency")?.value || "";
+      const zip = document.getElementById("zip")?.value || "";
+      const name = document.getElementById("name")?.value || "";
+      const phone = document.getElementById("phone")?.value || "";
+  
+      let tag = "NORMAL";
+      let emoji = "📩";
+  
+      if (urgency.includes("Emergency")) { tag = "EMERGENCY"; emoji = "🚨"; }
+      else if (urgency.includes("24–48")) { tag = "SOON"; emoji = "⏱️"; }
+      else if (urgency.includes("This Week")) { tag = "THIS WEEK"; emoji = "📅"; }
+      else if (urgency.includes("Quote")) { tag = "QUOTE"; emoji = "💬"; }
+  
+      // Write hidden fields (these must exist)
+      document.getElementById("leadPriority").value = tag;
+      document.getElementById("leadSummary").value =
+        `${serviceType} | ${tag} | ${zip} | ${name} | ${phone}`;
+      
+      // Populate contact preference fields
+      const bestTime = document.getElementById("bestTimeSelect")?.value || "";
+      const contactMethod = document.getElementById("contactMethodSelect")?.value || "";
+      document.getElementById("bestTime").value = bestTime;
+      document.getElementById("contactMethod").value = contactMethod;
+
+      // Update subject (must exist)
+      document.getElementById("serviceSubject").value =
+        `${emoji} ${tag}: ${serviceType} — ${zip}`;
+  
+      document.getElementById("contactMethod").value =
+        document.getElementById("contactMethodSelect")?.value || "";
+
+      document.getElementById("bestTime").value =
+        document.getElementById("bestTimeSelect")?.value || "";
+
+      return true; // allow submit to continue
+    }
+
+
+
+
+
+  </script>
+  
+</body>
+</html>
